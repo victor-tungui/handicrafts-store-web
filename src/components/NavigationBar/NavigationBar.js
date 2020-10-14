@@ -23,7 +23,7 @@ const navigationBar = (props) => (
           <li className="nav-item">
             <NavLink 
               to={{
-                pathname:"manage-products"
+                pathname:"/manage-products"
               }} 
               className="nav-link">Manage Products</NavLink>
         </li>
