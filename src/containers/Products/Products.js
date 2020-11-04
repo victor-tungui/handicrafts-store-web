@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axiosInstance from '../../axios/axiosProducts';
+import ProductGrid from '../../components/Products/ProductGrid'
 
 class Products extends Component {
 
@@ -29,35 +30,36 @@ class Products extends Component {
         });
     }
 
+    // Events
+    editProductHandler = (e, id) => {
+        console.log("Product Id", id);
+    }
+
+    deleteProductHandler = (e, id) => {
+        let products = [...this.state.products];
+        let index = products.findIndex((ele, index) => ele.id === id);
+        products.splice(index, 1);
+
+        console.log(products);
+    }
+
     render() {
-        let productsGrid = null;
+        let grid = null;
 
         if (this.state.isLoading) {
-            productsGrid = <span>Products Loading...</span>;
+            grid = <span>Products Loading...</span>;
+        } else if (this.state.products) {
+            grid = <ProductGrid 
+                        products={this.state.products} 
+                        editEvent={this.editProductHandler} 
+                        deleteEvent={this.deleteProductHandler}/>
         } else {
-            productsGrid = 
-                <table className="table">
-                    <thead className="thead-light">
-                        <tr>
-                            <th scope="col">Code</th>
-                            <th scope="col">Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.products.map((product, index) => ( 
-                            <tr key={product.id}>
-                                <td>{product.name}</td>
-                                <td>{product.code}</td>
-                            </tr>
-                          ))
-                        }
-                    </tbody>
-                </table>;
+            grid = <span>Error loading products. Please try again</span>
         }
 
         return (
             <div>
-                {productsGrid}
+                {grid}
             </div>
         );
     }
